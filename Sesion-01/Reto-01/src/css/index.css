@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#mesa {
+	background-color: pink;
+	width: 800px;
+	height: 500px;
+}
+
+.mantel {
+	height: 100px;
+	background-color: purple;
+	width: 200px;
+	padding: 20px;
+}
+
+.spaceAround {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.cubierto {
+	height: 100%;
+	width: 15%;
+	background-color: grey;
+}
+
+.plato {
+	height: 100%;
+	width: 50%;
+	background-color: white;
+	border-radius: 50%;
+}
