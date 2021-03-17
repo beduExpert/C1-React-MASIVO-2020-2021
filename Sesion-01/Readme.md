@@ -22,17 +22,15 @@ React también llamada ReactJS es una librería de JavaScript creada por Faceboo
 
 ## 🕵 Ejemplos:
 
-+ [`Ejemplo 01: Techo del cielo`](Ejemplo-01)
-+ [`Ejemplo 02: Luz Mercurial`](Ejemplo-02)
++ [`Ejemplo 01: Lista de Tareas`](Ejemplo-01)
 
 ## 💻 Retos:
 
-+ [`Reto 01: ¡A comer!`](Reto-01)
-+ [`Reto 02: ¡Yo me lo llevo!`](Reto-02)
++ [`Reto 01: Lista de Tareas`](Reto-01)
 
 ## 🛡 Postwork
 
-**Mejorando nuestra Luz Mercurial**...[`leer más`](Postwork/)
+**Mejorando nuestra Lista de Tareas**...[`leer más`](Postwork/)
 
 
 ## ⚛ ORGANIZACION DE LA CLASE

@@ -2,14 +2,14 @@
 
 #### REQUISITOS
 - Tener Node instalado.
-- Completar el [Ejemplo-02](../Ejemplo-02)
 
 
 #### DESARROLLO
 
-1. Abrir nuestro proyecto "Luz Mercurial" del [Ejemplo-02](../Ejemplo-02).
+1. Abrir nuestro proyecto "TodoApp" del [Reto-01](../Reto-01).
 
-2. Actualmente contamos con 6 componentes: `App`, `Foco`, `Luz`, `FilaFocos`, `FocoMercurial` y `LuzMercurial`.
+2. ¿Por qué hay clases de css en los componentes que no codeamos nosotros?
 
-3. Obten el siguiente resultado utilizando máximo 5 componentes:
-<img src="./public/resultado.png" width="400">
+3. ¿De dónde están trayendo el css esas clases?
+
+4. ¿Cómo podemos hacer una mejor implementación de `TodoList`, para no copiar y pegar todos los `Todo`?

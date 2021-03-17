@@ -1,10 +1,18 @@
 import React from 'react';
-import Mesa from './Mesa';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
 
-const App = () => {
-   return (
-      <Mesa />
-   );
-};
+function App() {
+  return (
+    <div className="wrapper">
+      <div className="card frame">
+        <Header />
+        <TodoList />
+        <Form />
+      </div>
+    </div>
+  );
+}
 
 export default App;
