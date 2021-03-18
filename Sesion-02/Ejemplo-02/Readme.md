@@ -1,6 +1,6 @@
 [`React Fundamentals`](../../README.md) > [`Sesión 02: Estado (state) y Propiedades (props)`](../Readme.md) > `Ejemplo 2`
 
-## Gracias Abuelo
+## Proptypes y propiedades (props)
 
 ### OBJETIVO 
 - **Declaración** y **utilización de propiedades (props)**.
@@ -11,7 +11,7 @@
 
 #### DESARROLLO
 
-1. Abrir nuestro proyecto "Patricio" del [Ejemplo-01](../Ejemplo-01).
+1. Abrir el proyecto del [Ejemplo-01](../Ejemplo-01).
 
 2. Las Tareas (Todo) tienen un estado que dicta si están completadas o no.
 
@@ -37,34 +37,7 @@ function TodoList() {
 export default TodoList;
 ```
 
-5. Para asegurarnos que este valor si esta siendo recibido correctamente como propiedad (props), vamos a `LuzMercurial.js` e imprimirlo en la consola con `console.log(this.props)`.
-```
-import React from 'react';
-
-class LuzMercurial extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         color: 'pink'
-      };
-   }
-
-   render() {
-      console.log(this.props);
-
-      return (
-         <div
-            className="luzMercurial"
-            style={{ backgroundColor: this.state.color }}
-         />
-      );
-   }
-};
-
-export default LuzMercurial;
-``` 
-
-6. Tenemos que obtener ese `done` (true/false) en Todo y responder a él.
+5. Tenemos que obtener ese `done` (true/false) en Todo y responder a él.
 ```
 import React from 'react';
 import '../css/Todo.css';
@@ -83,9 +56,9 @@ class Todo extends React.Component {
 export default Todo;
 ```
 
-7. Como paso final vamos a seguir las [buenas prácticas para propiedades (props)](../../BuenasPracticas/PropTypes/Readme.md) con los componentes `FocoMercurial.js` y `LuzMercurial.js`.
+6. Como paso final vamos a seguir las [buenas prácticas para propiedades (props)](../../BuenasPracticas/PropTypes/Readme.md) con los componentes `FocoMercurial.js` y `LuzMercurial.js`.
 
-8. `Todo.js` nos va a quedar así:
+7. `Todo.js` nos va a quedar así:
 ```
 import React from 'react';
 import PropTypes from 'prop-types';

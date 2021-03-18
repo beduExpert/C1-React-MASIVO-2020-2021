@@ -11,11 +11,7 @@
 
 #### DESARROLLO
 
-1. Comenzar nuevo proyecto de React con el comando `npx create-react-app ejemplo1`.
-
-2. Seguir las [buenas prácticas para empezar un proyecto](../../BuenasPracticas/EmpezandoProyectos/Readme.md).
-
-3. Convertimos nuestra `App.js` en un componente stateful (clase) para usar el estado.
+1. Convertimos nuestra `App.js` en un componente stateful (clase) para usar el estado.
 ```
 import React from 'react';
 import Header from './Header';
@@ -40,7 +36,7 @@ class App extends React.Component {
 export default App;
 ```
 
-4. Agregamos un estado inicial que contendrá todas las tareas de la aplicación
+2. Agregamos un estado inicial que contendrá todas las tareas de la aplicación
 ```
 import React from 'react';
 import Header from './Header';
@@ -66,7 +62,7 @@ class App extends React.Component {
 export default App;
 ``` 
 
-5. Usamos el estado en dónde esperamos recibirlo
+3. Usamos el estado en dónde esperamos recibirlo
 ```
 import React from 'react';
 import Header from './Header';
@@ -92,7 +88,7 @@ class App extends React.Component {
 export default App;
 ``` 
 
-6. Modificamos el componente que recibe este estado `TodoList`, iterando sobre las tareas recibidas.
+4. Modificamos el componente que recibe este estado `TodoList`, iterando sobre las tareas recibidas.
 ```
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -126,7 +122,7 @@ TodoList.defaultProps = {
 export default TodoList;
 ```
 
-7. Modificamos consecuentemente todos los componentes hijos en dicha rama del árbol.
+5. Modificamos consecuentemente todos los componentes hijos en dicha rama del árbol.
 ```
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -156,7 +152,7 @@ export default Todo;
 
 ```
 
-8. Realizamos los últimos 3 pasos respectivamente con los siguientes componentes a modificiar (`Header`).
+6. Realizamos los últimos 3 pasos respectivamente con los siguientes componentes a modificiar (`Header`).
 ```
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -183,7 +179,7 @@ Header.defaultProps = {
 export default Header;
 ```
 
-9. Cambiamos el estado original con una función que se ejecutará dándole click a un botón
+7. Cambiamos el estado original con una función que se ejecutará dándole click a un botón
 ```
 import React from 'react';
 import Header from './Header';
@@ -230,7 +226,7 @@ class App extends React.Component {
 export default App;
 ```
 
-10. Pintamos el botón que inicializa el estado solo cuándo el estado está vacío
+8. Pintamos el botón que inicializa el estado solo cuándo el estado está vacío
 ```
 import React from 'react';
 import Header from './Header';

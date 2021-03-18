@@ -1,80 +1,62 @@
 import React from 'react';
-import Nombre from './Nombre';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+import '../css/App.css';
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			nombre: '',
-			mensaje: '',
-			listaNombres: ['Bedu']
-		};
-	};
+  state = { todos: [] }
 
-	componentDidUpdate(prevProps, prevState) {
-		if (this.state.listaNombres !== prevState.listaNombres) {
-			this.setState({
-				mensaje: `Longitud de la lista es: ${this.state.listaNombres.length}`
-			})
-		}
-	};
+  componentDidMount() {
+    this.setState({
+      todos: [
+        { title: "Sesión 1 (JSX)", done: true},
+        { title: "Sesión 2 (Estado y propiedades)", done: true },
+        { title: "Sesión 3 (Ciclo de vida)", done: true },
+        { title: "Sesión 4 (Hooks)", done: false },
+        { title: "Sesión 5 (Hooks)", done: false },
+        { title: "Sesión 6 (Rutas)", done: false },
+        { title: "Sesión 7 (PWA)", done: false },
+        { title: "Sesión 8 (Material UI)", done: false },
+      ],
+    })
+  }
 
-	handleInputChange = (event) => {
-		this.setState({
-			nombre: event.target.value
-		});
-	};
+  handleClickDelete = (e, index) => {
+    const todos = [...this.state.todos];
+    todos.splice(index, 1);
 
-	handleClick = () => {
-		const nombreEnEstado = this.state.nombre;
-		if (!nombreEnEstado) return;
+    this.setState({ todos: todos });
+  }
 
-		const listaActualizada = [
-			...this.state.listaNombres,
-			nombreEnEstado
-		];
+  handleClickToggleDone = (e, index) => {
+    const todos = [...this.state.todos];
+    todos[index].done = !todos[index].done;
 
-		this.setState({
-			nombre: '',
-			listaNombres: listaActualizada,
-		});
-	};
+    this.setState({ todos });
+  }
 
-	borrarNombreDeLista = (key) => {
-		const copiaDeLista = [...this.state.listaNombres];
-		copiaDeLista.splice(key, 1);
+  addTask = (title) => {
+    this.setState({
+      todos : this.state.todos.concat([{ title, done: false }])
+    });
+  }
 
-		this.setState({
-			listaNombres: copiaDeLista
-		});
-	};
-
-	render() {
-		return (
-			<div className="margen">
-				{this.state.mensaje}
-				<br />
-				<input
-					value={this.state.nombre}
-					onChange={this.handleInputChange}
-				/>
-				<button onClick={this.handleClick}>
-					Agregar
-				</button>
-
-				<ul>
-					{this.state.listaNombres.map((nmbr, key) => (
-						<li key={key}>
-							<Nombre
-								nombre={nmbr}
-								borrarNombreDeLista={() => this.borrarNombreDeLista(key)}
-							/>
-						</li>
-					))}
-				</ul>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className="wrapper">
+        <div className="card frame">
+          <Header counter={this.state.todos.length} />
+          <TodoList 
+            tasks={this.state.todos} 
+            toggleFn={this.handleClickToggleDone}
+            deleteFn={this.handleClickDelete}
+          />
+          <Form addTaskFn={this.addTask} />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
