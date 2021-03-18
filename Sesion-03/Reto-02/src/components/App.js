@@ -1,85 +1,69 @@
 import React from 'react';
-import Tarea from './Tarea';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+import '../css/App.css';
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			tarea: '',
-			mensaje: '',
-			listaTareas: ['Hacer reto 2']
-		};
-	};
+  state = { todos: [] }
 
-	componentDidUpdate(prevProps, prevState) {
-		if (this.state.listaTareas !== prevState.listaTareas) {
-			this.setState({
-				mensaje: `Por hacer: ${this.state.listaTareas.length}`
-			})
-		}
-	};
+  componentDidMount() {
+    this.setState({
+      todos: [
+        { title: "Sesión 1 (JSX)", done: true},
+        { title: "Sesión 2 (Estado y propiedades)", done: true },
+        { title: "Sesión 3 (Ciclo de vida)", done: true },
+        { title: "Sesión 4 (Hooks)", done: false },
+        { title: "Sesión 5 (Hooks)", done: false },
+        { title: "Sesión 6 (Rutas)", done: false },
+        { title: "Sesión 7 (PWA)", done: false },
+        { title: "Sesión 8 (Material UI)", done: false },
+      ],
+    })
+  }
 
-	handleInputChange = (event) => {
-		this.setState({
-			tarea: event.target.value
-		});
-	};
+  handleClickDelete = (e, index) => {
+    const todos = [...this.state.todos];
+    todos.splice(index, 1);
 
-	handleClick = () => {
-		const tareaEnEstado = this.state.tarea;
-		if (!tareaEnEstado) return;
+    this.setState({ todos: todos });
+  }
 
-		const tareaYaExiste = this.state.listaTareas.find(
-			(existente) => existente === tareaEnEstado
-		);
-		if (tareaYaExiste) return alert(`Tarea "${tareaEnEstado}" ya existe.`);
+  handleClickToggleDone = (e, index) => {
+    const todos = [...this.state.todos];
+    todos[index].done = !todos[index].done;
 
-		const listaActualizada = [
-			...this.state.listaTareas,
-			tareaEnEstado
-		];
+    this.setState({ todos });
+  }
 
-		this.setState({
-			tarea: '',
-			listaTareas: listaActualizada,
-		});
-	};
+  addTask = (title) => {
+    const exists = this.state.todos.find(e => title === e.title);
 
-	borrarTarea = (key) => {
-		const copiaDeLista = [...this.state.listaTareas];
-		copiaDeLista.splice(key, 1);
+    if (exists) {
+      alert(`La tarea "${title}" ya existe!`);
+      return
+    }
 
-		this.setState({
-			listaTareas: copiaDeLista
-		});
-	};
+    this.setState({
+      todos : this.state.todos.concat([{ title, done: false }])
+    });
+  }
 
-	render() {
-		return (
-			<div className="margen">
-				{this.state.mensaje}
-				<br />
-				<input
-					value={this.state.tarea}
-					onChange={this.handleInputChange}
-				/>
-				<button onClick={this.handleClick}>
-					+
-				</button>
-
-				<ul>
-					{this.state.listaTareas.map((trea, key) => (
-						<li key={key}>
-							<Tarea
-								tarea={trea}
-								borrarTarea={() => this.borrarTarea(key)}
-							/>
-						</li>
-					))}
-				</ul>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className="wrapper">
+        <div className="card frame">
+          <Header counter={this.state.todos.length} />
+          <TodoList 
+            tasks={this.state.todos} 
+            toggleFn={this.handleClickToggleDone}
+            deleteFn={this.handleClickDelete}
+          />
+          <Form addTaskFn={this.addTask} />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;

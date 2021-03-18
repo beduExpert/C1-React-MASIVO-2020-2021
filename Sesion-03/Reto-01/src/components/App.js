@@ -1,41 +1,65 @@
 import React from 'react';
-import Boton from './Boton';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+import '../css/App.css';
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			contador: 0
-		};
-	};
+  state = { todos: [], showButton: true }
 
-	sumar = () => {
-		this.setState({
-			contador: this.state.contador + 1
-		})
-	};
+  handleClick = (e) => {
+    this.setState({
+      todos: [
+        { title: "Tarea 1", done: true },
+        { title: "Tarea 2", done: false },
+        { title: "Tarea 3", done: true },
+        { title: "Tarea 4", done: false },
+        { title: "Tarea 5", done: true },
+        { title: "Tarea 6", done: false },
+        { title: "Tarea 7", done: true },
+        { title: "Tarea 8", done: false },
+        { title: "Tarea 9", done: true },
+        { title: "Tarea 10", done: false },
+      ],
+      showButton: false,
+    })
+  }
 
-	restar = () => {
-		this.setState({
-			contador: this.state.contador - 1
-		})
-	};
+  handleClickDelete = (e, index) => {
+    const todos = [...this.state.todos];
+    todos.splice(index, 1);
 
-   render() {
-   	return (
-   	   <div className="margen">
-   	      <Boton
-   	      	texto="Sumar"
-   	      	handleClick={this.sumar}
-   	      />
-   	      {this.state.contador}
-   	      <Boton
-   	      	texto="Restar"
-   	      	handleClick={this.restar}
-   	      />
-   	   </div>
-   	);
-   }
+    this.setState({ todos: todos });
+  }
+
+  handleClickToggleDone = (e, index) => {
+    const todos = [...this.state.todos];
+    todos[index].done = !todos[index].done;
+
+    this.setState({ todos });
+  }
+
+  render() {
+    return (
+      <div className="wrapper">
+        <div className="card frame">
+          <Header counter={this.state.todos.length} />
+          <TodoList 
+            tasks={this.state.todos} 
+            toggleFn={this.handleClickToggleDone}
+            deleteFn={this.handleClickDelete}
+          />
+          <Form />
+          {
+            this.state.showButton &&
+              <button onClick={this.handleClick} className="button init">
+                Inicializar
+              </button>
+          }
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
