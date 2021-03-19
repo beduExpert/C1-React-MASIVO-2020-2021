@@ -1,21 +1,16 @@
 [`React Fundamentals`](../../README.md) > [`Sesión 05: Hooks y useEffect`](../Readme.md) >[`Ejemplo-01`](../Ejemplo-01) > `Reto 1`
 
-## Extraño la tarea
+## Modificar una tarea en servidor
 
 ### OBJETIVO
-- Convertir los 3 ciclos de vida a hooks.
+- Cambiar en el servidor (fake-backend) la propiedad `done` de las tareas originales, via la UI
 
 #### REQUISITOS
-- Haber completado el [Reto-02](../../Sesion-03/Reto-02) de la Sesion-03.
+- Haber completado el [Ejemplo-01](../../Sesion-05/Ejemplo-01) de la Sesion-05.
 
 #### DESARROLLO
 
-1. Abrir nuestro proyecto "Ciclos de vida viejos" del [Reto-02](../../Sesion-03/Reto-02) de la Sesion-03.
-
-2. Convierte todo `App.js` en componente stateless (función), usa los hooks necesarios y hazlo funcionar.
-
-3. Resultado
-<img src="./public/resultado.gif">
+1. Implementa tus cambios en el componente `App.js`.
 
 ## ❗Importante
 

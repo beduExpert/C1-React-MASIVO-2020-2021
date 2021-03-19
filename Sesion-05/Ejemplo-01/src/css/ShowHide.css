@@ -1,0 +1,65 @@
+/* https://css.gg/unblock */
+
+ .gg-unblock {
+ box-sizing: border-box;
+ position: relative;
+ display: block;
+ transform: rotate(45deg) scale(var(--ggs,1));
+ width: 18px;
+ height: 18px;
+ border: 2px solid;
+ border-radius: 100%
+}
+
+.gg-unblock::after,
+.gg-unblock::before {
+ content: "";
+ display: block;
+ box-sizing: border-box;
+ position: absolute;
+ width: 2px;
+ height: 7px;
+ background: currentColor;
+ border-radius: 5px;
+ left: 6px
+}
+
+.gg-unblock::before {
+ top: -2px
+}
+
+.gg-unblock::after {
+ bottom: -2px
+}
+
+ .gg-block {
+ box-sizing: border-box;
+ position: relative;
+ display: block;
+ transform: scale(var(--ggs,1));
+ width: 16px;
+ height: 16px;
+ border: 2px solid;
+ border-radius: 100%
+}
+
+.gg-block::before {
+ content: "";
+ display: block;
+ box-sizing: border-box;
+ position: absolute;
+ width: 10px;
+ height: 2px;
+ background: currentColor;
+ border-radius: 5px;
+ transform: rotate(-45deg);
+ top: 5px;
+ left: 1px
+}
+
+.icon-wrapper {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  margin-right: 1em;
+}

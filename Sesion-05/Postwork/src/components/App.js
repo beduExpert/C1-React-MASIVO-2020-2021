@@ -1,90 +1,148 @@
 import React from 'react';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+import '../css/App.css';
 
-const App = () => {
-	const [edad, setEdad] = React.useState('');
-	const [genero, setGenero] = React.useState('');
+const URL = "http://localhost:4000/todos";
 
-	React.useEffect(() => {
-		alert('Selecciona el género y edad para tener la sugerencia de un regalo.');
-	}, []);
+function App() {
+  const [todos, setTodos] = React.useState([]);
+  const [show, setShow] = React.useState(true);
 
-	const cambiarEdad = (event) => setEdad(event.target.value);
-	const cambiarGenero = (event) => setGenero(event.target.value);
+  React.useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await fetch(URL);
+        const data = await response.json();
+        setTodos(data);
+      } catch(error) {
+        console.error(error);
+      }
+    };
 
-	const renderizarRegalo = () => {
-		if (genero === 'mujer') {
-			switch (edad) {
-				case '0': return 'Muñecas';
-				case '1': return 'Viajes';
-				case '2': return 'Operaciones';
-			}
-		}
-		if (genero === 'hombre') {
-			switch (edad) {
-				case '0': return 'Dinosaurios';
-				case '1': return 'Carro';
-				case '2': return 'Casa';
-			}
-		}
-	};
+    getData();
+  }, []);
 
-	return (
-		<div className="margen">
-			<p>Género</p>
-			<input
-				id="mujer"
-				value="mujer"
-				type="radio"
-				name="genero"
-				onClick={cambiarGenero}
-			/>
-			<label htmlFor="mujer">Mujer</label>
-			<br />
+  const handleClickDelete = async (e, title) => {
+    // Otener el índice del elemento que se le hizo click
+    const el = todos.find(e => e.title === title)
+    // Verificar que en efecto exista en el `todos`
+    if (el === undefined) return
 
-			<input
-				id="hombre"
-				value="hombre"
-				type="radio"
-				name="genero"
-				onClick={cambiarGenero}
-			/>
-			<label htmlFor="hombre">Hombre</label>
-			<br />
+    // Cambio en el servidor
+    const config = {
+      url: `${URL}/${el.id}`,
+      method: "DELETE"
+    };
 
-			<p>Edad</p>
-			<input
-				id="0"
-				value="0"
-				type="radio"
-				name="edad"
-				onClick={cambiarEdad}
-			/>
-			<label htmlFor="0">0-10</label>
-			<br />
+    try {
+      const response = await goToBackend(config)
 
-			<input
-				id="1"
-				value="1"
-				type="radio"
-				name="edad"
-				onClick={cambiarEdad}
-			/>
-			<label htmlFor="1">10-20</label>
-			<br />
+      if (!response.ok) throw new Error("Response not ok");
 
-			<input
-				id="2"
-				value="2"
-				type="radio"
-				name="edad"
-				onClick={cambiarEdad}
-			/>
-			<label htmlFor="2">20-30</label>
-			<br /><br />
+      // UI
+      const t = [...todos];
+      const index = t.findIndex(element => element.id === el.id);
+      t.splice(index, 1);
 
-			{renderizarRegalo()}
-		</div>
-	);
-};
+      setTodos(t);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const goToBackend = (config, data) => {
+    return fetch(config.url, {
+      method: config.method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: data ? JSON.stringify(data) : null
+    })
+  }
+
+  const handleClickToggleDone = async (e, title) => {
+    // Otener el índice del elemento que se le hizo click
+    const el = todos.find(e => e.title === title)
+    // Verificar que en efecto exista en el `todos`
+    if (el === undefined) return
+
+    const value = !el.done;
+
+    // Cambio en el servidor
+    const config = {
+      url: `${URL}/${el.id}`,
+      method: "PATCH"
+    };
+
+    try {
+      const response = await goToBackend(config, {done: value})
+
+      if (!response.ok) throw new Error("Response not ok");
+
+      // UI
+      const t = [...todos];
+      const index = t.findIndex(element => element.id === el.id);
+      t[index].done = !t[index].done;
+
+      setTodos(t);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const addTask = async (title) => {
+    const exists = todos.find(e => title === e.title);
+
+    if (exists) {
+      alert(`La tarea "${title}" ya existe!`);
+      return
+    }
+
+    // Cambio en el servidor
+    const config = {
+      url: URL,
+      method: "POST"
+    };
+
+    const data = {
+      title: title,
+      done: false,
+    }; 
+
+    try {
+      const response = await goToBackend(config, data);
+      if (!response.ok) throw new Error("Response not ok");
+
+      const todo = await response.json();
+
+      // UI
+      setTodos(todos.concat([todo]));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const filtered = todos.filter(e => !e.done || e.done === show);
+
+  return (
+    <div className="wrapper">
+      <div className="card frame">
+        <Header
+          counter={filtered.length}
+          show={show}
+          toggleDone={setShow}
+        />
+        <TodoList 
+          tasks={filtered}
+          toggleFn={handleClickToggleDone}
+          deleteFn={handleClickDelete}
+        />
+        <Form addTaskFn={addTask} />
+      </div>
+    </div>
+  )
+}
 
 export default App;

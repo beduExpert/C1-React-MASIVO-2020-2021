@@ -1,83 +1,107 @@
 import React from 'react';
-import Tarea from './Tarea';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+import '../css/App.css';
 
-const App = () => {
-	const [state, setState] = React.useState({
-		tarea: '',
-		mensaje: '',
-		listaTareas: ['Hacer reto 2']
-	});
+const URL = "http://localhost:4000/todos";
 
-	const didUpdate = () => {
-		setState({
-			...state,
-			mensaje: `Por hacer: ${state.listaTareas.length}`
-		});
-	};
-	React.useEffect(didUpdate, [state.listaTareas]);
+function App() {
+  const [todos, setTodos] = React.useState([]);
+  const [show, setShow] = React.useState(true);
 
-	const handleInputChange = (event) => {
-		setState({
-			...state,
-			tarea: event.target.value
-		});
-	};
+  React.useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await fetch(URL);
+        const data = await response.json();
+        setTodos(data);
+      } catch(error) {
+        console.error(error);
+      }
+    };
 
-	const handleClick = () => {
-		const tareaEnEstado = state.tarea;
-		if (!tareaEnEstado) return;
+    getData();
+  }, []);
 
-		const tareaYaExiste = state.listaTareas.find(
-			(existente) => existente === tareaEnEstado
-		);
-		if (tareaYaExiste) return alert(`Tarea "${tareaEnEstado}" ya existe.`);
+  const handleClickDelete = (e, title) => {
+    const t = [...todos];
+    const index = t.findIndex(e => e.title === title);
+    if (-1 < index) t.splice(index, 1);
 
-		const listaActualizada = [
-			...state.listaTareas,
-			tareaEnEstado
-		];
+    setTodos(t);
+  }
 
-		setState({
-			...state,
-			tarea: '',
-			listaTareas: listaActualizada,
-		});
-	};
+  const changeProperty = (config, property, value) => {
+    return fetch(config.url, {
+      method: config.method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ [property]: value })
+    })
+  }
 
-	const borrarTarea = (key) => {
-		const copiaDeLista = [...state.listaTareas];
-		copiaDeLista.splice(key, 1);
+  const handleClickToggleDone = async (e, title) => {
+    // Otener el índice del elemento que se le hizo click
+    const el = todos.find(e => e.title === title)
+    // Verificar que en efecto exista en el `todos`
+    if (el === undefined) return
 
-		setState({
-			...state,
-			listaTareas: copiaDeLista
-		});
-	};
+    const value = !el.done;
 
-	return (
-		<div className="margen">
-			{state.mensaje}
-			<br />
-			<input
-				value={state.tarea}
-				onChange={handleInputChange}
-			/>
-			<button onClick={handleClick}>
-				+
-			</button>
+    // Cambio en el servidor
+    const config = {
+      url: `${URL}/${el.id}`,
+      method: "PATCH"
+    };
 
-			<ul>
-				{state.listaTareas.map((trea, key) => (
-					<li key={key}>
-						<Tarea
-							tarea={trea}
-							borrarTarea={() => borrarTarea(key)}
-						/>
-					</li>
-				))}
-			</ul>
-		</div>
-	);
+    try {
+      const response = await changeProperty(config, "done", value)
+
+      if (!response.ok) throw new Error("Response not ok");
+
+      // UI
+      const t = [...todos];
+      const index = t.findIndex(element => element.id === el.id);
+      t[index].done = !t[index].done;
+
+      setTodos(t);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const addTask = (title) => {
+    const exists = todos.find(e => title === e.title);
+
+    if (exists) {
+      alert(`La tarea "${title}" ya existe!`);
+      return
+    }
+
+    setTodos(todos.concat([{ title, done: false }]));
+  }
+
+  const filtered = todos.filter(e => !e.done || e.done === show);
+
+  return (
+    <div className="wrapper">
+      <div className="card frame">
+        <Header
+          counter={filtered.length}
+          show={show}
+          toggleDone={setShow}
+        />
+        <TodoList 
+          tasks={filtered}
+          toggleFn={handleClickToggleDone}
+          deleteFn={handleClickDelete}
+        />
+        <Form addTaskFn={addTask} />
+      </div>
+    </div>
+  )
 }
 
 export default App;
