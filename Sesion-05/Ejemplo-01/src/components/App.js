@@ -1,78 +1,71 @@
 import React from 'react';
-import Nombre from './Nombre';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+import '../css/App.css';
 
-const App = () => {
-	const [state, setState] = React.useState({
-		nombre: '',
-		mensaje: '',
-		listaNombres: ['Bedu']
-	});
+const URL = "http://localhost:4000/todos";
 
-	const didUpdate = () => {
-		setState({
-			...state,
-			mensaje: `Longitud de la lista es: ${state.listaNombres.length}`
-		});
-	};
-	React.useEffect(didUpdate, [state.listaNombres]);
+function App() {
+  const [todos, setTodos] = React.useState([]);
+  const [show, setShow] = React.useState(true);
 
-	const handleInputChange = (event) => {
-		setState({
-			...state,
-			nombre: event.target.value
-		});
-	};
+  React.useEffect(() => {
+    const getData = async () => {
+      const response = await fetch(URL);
+      const data = await response.json();
+      setTodos(data);
+    };
 
-	const handleClick = () => {
-		const nombreEnEstado = state.nombre;
-		if (!nombreEnEstado) return;
+    getData();
+  }, []);
 
-		const listaActualizada = [
-			...state.listaNombres,
-			nombreEnEstado
-		];
+  const handleClickDelete = (e, title) => {
+    const t = [...todos];
+    const index = t.findIndex(e => e.title === title);
+    if (-1 < index) t.splice(index, 1);
 
-		setState({
-			...state,
-			nombre: '',
-			listaNombres: listaActualizada,
-		});
-	};
+    setTodos(t);
+  }
 
-	const borrarNombreDeLista = (key) => {
-		const copiaDeLista = [...state.listaNombres];
-		copiaDeLista.splice(key, 1);
+  const handleClickToggleDone = (e, title) => {
+    const t = [...todos];
+    const index = t.findIndex(e => e.title === title)
+    if (-1 < index) t[index].done = !t[index].done;
 
-		setState({
-			...state,
-			listaNombres: copiaDeLista
-		});
-	};
+    setTodos(t);
+  }
 
-	return (
-		<div className="margen">
-			{state.mensaje}
-			<br />
-			<input
-				value={state.nombre}
-				onChange={handleInputChange}
-			/>
-			<button onClick={handleClick}>
-				Agregar
-			</button>
+  const addTask = (title) => {
+    const exists = todos.find(e => title === e.title);
 
-			<ul>
-				{state.listaNombres.map((nmbr, key) => (
-					<li key={key}>
-						<Nombre
-							nombre={nmbr}
-							borrarNombreDeLista={() => borrarNombreDeLista(key)}
-						/>
-					</li>
-				))}
-			</ul>
-		</div>
-	);
+    if (exists) {
+      alert(`La tarea "${title}" ya existe!`);
+      return
+    }
+
+    setTodos(todos.concat([{ title, done: false }]));
+  }
+
+  const filtered = todos.filter(e => !e.done || e.done === show);
+
+  return (
+    <div className="wrapper">
+      <div className="card frame">
+        <Header
+          counter={filtered.length}
+          show={show}
+          toggleDone={setShow}
+        />
+        <TodoList 
+          tasks={filtered}
+          toggleFn={handleClickToggleDone}
+          deleteFn={handleClickDelete}
+        />
+        <Form addTaskFn={addTask} />
+      </div>
+    </div>
+  )
 }
 
 export default App;

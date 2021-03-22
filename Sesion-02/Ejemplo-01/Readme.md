@@ -12,120 +12,110 @@
 
 #### DESARROLLO
 
-1. Abrir nuestro proyecto "Luz Mercurial" del [Ejemplo-02](../../Sesion-01/Ejemplo-02) de la Sesion-01.
+1. Abrir nuestro proyecto "Lista de Tareas" del [Reto-01](../../Sesion-01/Reto-01) de la Sesion-01.
 
-2. Ya tenemos nuestros focos con luces naranjas, lo que vamos a hacer es definir el color de las luces con el estado de React.
+2. Ya tenemos una lista de tareas y vamos a definir un estado en cada tarea para saber si ya fue completada o no.
 
-3. Abrimos nuestro archivo `Luz.js` y como primer paso tenemos que cambiar el tipo de componente a que sea stateful (componente clase).
+3. Abrimos nuestro archivo `Todo.js` y como primer paso tenemos que cambiar el tipo de componente a que sea stateful (componente clase).
 
-4. Cambiamos la linea de declaración de esto: `const Luz = () => {` a esto `class Luz extends React.Component {`; no va a funcionar porque todavia no terminamos.
+4. Cambiamos la linea de declaración de esto: `function Todo() => {` a esto `class Todo extends React.Component {`; no va a funcionar porque todavia no terminamos.
 ```
 import React from 'react';
-import '../css/Luz.css';
 
-class Luz extends React.Component {
-   return (
-      <div className="luz">
-      </div>
-   );
+class Todo extends React.Component {
+  return (
+    <div className="list-item">
+      Tarea
+      <button className="delete is-pulled-right" />
+    </div>
+  )
 };
 
-export default Luz;
+export default Todo;
 ```
 
 5. Ahora vamos a añadir el `render()`, esto es lo que falta alrededor del `return`; con esto, nuestra applicación vuelve a funcionar.
 ```
 import React from 'react';
-import '../css/Luz.css';
 
 class Luz extends React.Component {
-   render() {
-      return (
-         <div className="luz">
-         </div>
-      );
-   }
+  render () {
+    return (
+      <div className="list-item">
+        Tarea
+        <button className="delete is-pulled-right" />
+      </div>
+    )
+  }
 };
 
-export default Luz;
+export default Todo;
 ``` 
 
-6. Vamos a declarar nuestro estado del componente añadiendo el `constructor`.
+6. Vamos a agregar el css necesario para mostrar la tarea completada.
 ```
 import React from 'react';
-import '../css/Luz.css';
+import '../css/Todo.css';
 
 class Luz extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         color: 'pink'
-      };
-   }
-
-   render() {
-      return (
-         <div className="luz">
-         </div>
-      );
-   }
+  render () {
+    return (
+      <div className="list-item">
+        Tarea
+        <button className="delete is-pulled-right" />
+      </div>
+    )
+  }
 };
 
-export default Luz;
+export default Todo;
 ```
 
-7. Vamos a sobreescribir el CSS del componente, poniendole el color directamente en la etiqueta JSX.
+7. Vamos a agregar el estado del componente a nivel de la clase
 ```
 import React from 'react';
-import '../css/Luz.css';
+import '../css/Todo.css';
 
-class Luz extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         color: 'pink'
-      };
-   }
+class Todo extends React.Component {
+  state = {
+    done: true,
+  }
 
-   render() {
-      return (
-         <div style={{ backgroundColor: this.state.color }} className="luz">
-         </div>
-      );
-   }
-};
+  render () {
+    return (
+      <div className="list-item">
+        Tarea
+        <button className="delete is-pulled-right" />
+      </div>
+    )
+  }
+}
 
-export default Luz;
+export default Todo;
+
 ```
 
-8. Cuando vemos el resultado nos da alegría de saber que es casi tan hermoso como nosotros (paso obligatorio).
-
-9. Vamos a hacer lo mismo con `LuzMercurial.js`; convertirlo en componente stateful (clase), agregar el estado (state) con algún color y sobreescribirlo.
+8. Utilizamos el estado para pintar una clase (de css) o no, dependiendo del estado (true/false en este caso)
 ```
 import React from 'react';
+import '../css/Todo.css';
 
-class LuzMercurial extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         color: 'pink'
-      };
-   }
+class Todo extends React.Component {
+  state = {
+    done: true,
+  }
 
-   render() {
-      return (
-         <div
-            className="luzMercurial"
-            style={{ backgroundColor: this.state.color }}
-         />
-      );
-   }
-};
+  render () {
+    return (
+      <div className={`list-item ${this.state.done ? 'done' : ''}`}>
+        Tarea
+        <button className="delete is-pulled-right" />
+      </div>
+    )
+  }
+}
 
-export default LuzMercurial;
+export default Todo;
 ```
 
-10. Resultado
-<img src="./public/resultado.png" width="400">
-
-[`Siguiente: Reto-01`](../Reto-01)
+[`Siguiente: Ejemplo-02`](../Ejemplo-02)

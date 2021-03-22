@@ -24,25 +24,23 @@ Las propiedades son la manera que tienen los componentes de React de comunicarse
 
 ## 🕵 Ejemplos:
 
-+ [`Ejemplo 01: Patricio`](Ejemplo-01)
++ [`Ejemplo 01: Tarea completada/no completada`](Ejemplo-01)
 
-+ [`Ejemplo 02: Gracias Abuelo`](Ejemplo-02)
++ [`Ejemplo 02: Tarea (mismo comportamiento) con props`](Ejemplo-02)
 
 ## 💻 Retos:
-+ [`Reto 01: Tía Socorro ganó`](Reto-01)
-
-+ [`Reto 02: Cada quien su mantel`](Reto-02)
++ [`Reto 01: Tarea con checkmark`](Reto-01)
 
 ## 🛡 Postwork
 
-**Mejorando el reto cada quien su mantel**...[`leer más`](Postwork/)
+**Mejorando el componente checkmark**...[`leer más`](Postwork/)
 
 ## ⚛  ORGANIZACION DE LA CLASE 
 + Componentes stateless (funcionales) VS stateful (clase).
 + Conversión de stateless a stateful y viceversa.
 + Cuándo y porqué usar cada componente.
 + Declaración y utilización de estado (state).
-+ Declaración y utilización de propiedades (props) en los 2 tipos de componente
++ Declaración y utilización de propiedades (props).
 + Buenas prácticas de propiedades (librería prop-types).
 
 ### 🎩 [Buenas prácticas para las propiedades (props)](../BuenasPracticas/PropTypes/Readme.md).

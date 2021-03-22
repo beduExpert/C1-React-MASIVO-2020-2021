@@ -18,7 +18,7 @@ Seguramente habrás escuchado sobre React Router y si no es así el día de hoy 
 
 ## 🕵 Ejemplos:
 
-+ [`Ejemplo 01: Anatomía`](Ejemplo-01)
++ [`Ejemplo 01: Detalles en tarea`](Ejemplo-01)
 + [`Ejemplo 02: Plan de estudios`](Ejemplo-02)
 
 ## 💻 Retos:

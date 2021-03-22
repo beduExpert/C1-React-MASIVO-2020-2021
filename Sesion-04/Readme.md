@@ -31,8 +31,8 @@ La palabra Hook se traduce como Gancho en español, y la razón de que esta nuev
 + [`Reto 03: ¿Cómo te llamas?`](Reto-03)
 
 ## 🛡 Postwork
-- Completar los ejemplo: 01, 02 y 03. 
-- Completar los retos: 01, 02 y 03...[`leer más`](Postwork/)
+- Completar los ejemplo: 01 y 02. 
+- Completar los retos: 01 y 02...[`leer más`](Postwork/)
 
 ## ⚛ ORGANIZACION DE LA CLASE
 - Convertir de **stateful (clase)** a usar **hooks**.

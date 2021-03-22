@@ -1,6 +1,6 @@
 [`React Fundamentals`](../../README.md) > [`Sesión 03: Estado (state) y Propiedades (props)`](../Readme.md) >[`Ejemplo-02`](../Ejemplo-02) > `Reto 2`
 
-## Ciclos de vida viejos
+## UX para el usuario
 
 ### OBJETIVO
 - Modificar el estado.
@@ -15,18 +15,7 @@
 
 #### DESARROLLO
 
-1. Comenzar nuevo proyecto de React con el comando `npx create-react-app reto2`.
-
-2. Seguir las [buenas prácticas para empezar un proyecto](../../BuenasPracticas/EmpezandoProyectos/Readme.md).
-
-3. Hacer una app de tareas por hacer, en donde agreguemos y eliminemos tareas.
-
-4. Avisar si la tarea ya existe.
-
-5. No olvides seguir las [buenas prácticas para las propiedades (props)](../../BuenasPracticas/PropTypes/Readme.md).
-
-6. Resultado:
-<img src="./public/resultado.gif">
+1. Avisar si la tarea ya existe cuando se agregue a la lista.
 
 ## ❗Importante
 

@@ -1,360 +1,190 @@
 [`React Fundamentals`](../../README.md) > [`Sesión 05: Hooks y useEffect`](../Readme.md) > `Ejemplo 1`
 
-## Capitán Garfio
+## Consumo de API
 
 ### OBJETIVO
-- Convertir los 3 ciclos de vida a hooks.
+- Usar useEffect para consumir un API
 
 #### REQUISITOS
-- Haber completado el [Ejemplo-02](../../Sesion-03/Ejemplo-02) de la Sesion-03.
+- Haber completado el [Reto-02](../../Sesion-04/Reto-02) de la Sesion-04.
 
 #### DESARROLLO
 
-1. Abrir nuestro proyecto "Complejidad, bienvenida" del [Ejemplo-02](../../Sesion-03/Ejemplo-02) de la Sesion-03.
+1. Abrir el proyecto del [Reto-02](../../Sesion-04/Reto-02) de la Sesion-04.
 
-2. Vamos a abrir primero `Nombre.js` y lo modificaremos para que ahora use los hooks de useEffect.
+2. Vamos a abrir `App.js` y notemos que ya usa useEffect.
 
-3. Si vemos, estamos usando 2 ciclos de vida, el `componentDidMount` y `componentWillUnmount`, vamos a comentar los 2 para que nos quede de esta manera:
+3. Si vemos el código comentado, notamos cómo se ven los métodos del ciclo de vida, sobrepasados por los hooks en los componentes funcionales.
 ```
 import React from 'react';
-import PropTypes from 'prop-types';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+import '../css/App.css';
 
-class Nombre extends React.Component {
-   // componentDidMount() {
-   //    alert('Te damos la bienvenida ' + this.props.nombre);
-   // }
+function App() {
+  // state = { todos: [] }
+  const [todos, setTodos] = React.useState([]);
+  const [show, setShow] = React.useState(true);
 
-   // componentWillUnmount() {
-   //    alert('Adiós');
-   // }
+  // componentDidMount() {
+    // this.setState({
+      // todos: [
+        // { title: "Sesión 1 (JSX)", done: true},
+        // { title: "Sesión 2 (Estado y propiedades)", done: true },
+        // { title: "Sesión 3 (Ciclo de vida)", done: true },
+        // { title: "Sesión 4 (Hooks)", done: false },
+        // { title: "Sesión 5 (Hooks)", done: false },
+        // { title: "Sesión 6 (Rutas)", done: false },
+        // { title: "Sesión 7 (PWA)", done: false },
+        // { title: "Sesión 8 (Material UI)", done: false },
+      // ],
+    // })
+  // }
+  React.useEffect(() => {
+    setTodos([
+      { title: "Sesión 1 (JSX)", done: true},
+      { title: "Sesión 2 (Estado y propiedades)", done: true },
+      { title: "Sesión 3 (Ciclo de vida)", done: true },
+      { title: "Sesión 4 (Hooks)", done: false },
+      { title: "Sesión 5 (Hooks)", done: false },
+      { title: "Sesión 6 (Rutas)", done: false },
+      { title: "Sesión 7 (PWA)", done: false },
+      { title: "Sesión 8 (Material UI)", done: false },
+    ]);
+  }, []);
 
-   render() {
-      return (
-         <div>
-            {this.props.nombre}
-            <button onClick={this.props.borrarNombreDeLista}>
-               X
-            </button>
-         </div>
-      );
-   }
-};
+  const handleClickDelete = (e, title) => {
+    const t = [...todos];
+    const index = t.findIndex(e => e.title === title);
+    if (-1 < index) t.splice(index, 1);
 
-Nombre.propTypes = {
-   nombre: PropTypes.string.isRequired,
-   borrarNombreDeLista: PropTypes.func.isRequired
-}
+    setTodos(t);
+  }
 
-export default Nombre;
-``` 
+  const handleClickToggleDone = (e, title) => {
+    const t = [...todos];
+    const index = t.findIndex(e => e.title === title)
+    if (-1 < index) t[index].done = !t[index].done;
 
-4. Como primer paso para migrar de stateful (clase) a hook, es hacerlo stateless (funcion), espero que te acuerdes de como hacerlo.
+    setTodos(t);
+  }
 
-5. Primero cambiamos la línea de declaración a `const Nombre = (props) => {`; y MUUUCHO cuidado, como en este caso estamos usando propiedades (props) no se nos debe olvidar incluir el `props` en la declaración.
-```
-const Nombre = (props) => {
-   // componentDidMount() {
-   //    alert('Te damos la bienvenida ' + this.props.nombre);
-   // }
+  const addTask = (title) => {
+    // const exists = this.state.todos.find(e => title === e.title);
+    const exists = todos.find(e => title === e.title);
 
-   // componentWillUnmount() {
-   //    alert('Adiós');
-   // }
+    if (exists) {
+      alert(`La tarea "${title}" ya existe!`);
+      return
+    }
 
-   render() {
-      return (
-         <div>
-            {this.props.nombre}
-            <button onClick={this.props.borrarNombreDeLista}>
-               X
-            </button>
-         </div>
-      );
-   }
-};
-``` 
+    // this.setState({
+      // todos : this.state.todos.concat([{ title, done: false }])
+    // });
+    setTodos(todos.concat([{ title, done: false }]));
+  }
 
-6. Sacamos el `return` del `render`.
-```
-const Nombre = (props) => {
-   // componentDidMount() {
-   //    alert('Te damos la bienvenida ' + this.props.nombre);
-   // }
+  const filtered = todos.filter(e => !e.done || e.done === show);
 
-   // componentWillUnmount() {
-   //    alert('Adiós');
-   // }
-
-   return (
-      <div>
-         {this.props.nombre}
-         <button onClick={this.props.borrarNombreDeLista}>
-            X
-         </button>
+  return (
+    <div className="wrapper">
+      <div className="card frame">
+        <Header
+          counter={filtered.length}
+          show={show}
+          toggleDone={setShow}
+        />
+        <TodoList 
+          tasks={filtered}
+          toggleFn={handleClickToggleDone}
+          deleteFn={handleClickDelete}
+        />
+        <Form addTaskFn={addTask} />
       </div>
-   );
-};
-```
-
-7. Y finalmente cambiamos todos los `this.props` por solo `props`. Ya vuelve a funcionar la app.
-```
-const Nombre = (props) => {
-   // componentDidMount() {
-   //    alert('Te damos la bienvenida ' + this.props.nombre);
-   // }
-
-   // componentWillUnmount() {
-   //    alert('Adiós');
-   // }
-
-   return (
-      <div>
-         {props.nombre}
-         <button onClick={props.borrarNombreDeLista}>
-            X
-         </button>
-      </div>
-   );
-};
-```
-
-8. Vamos a crear nuestro primer `useEffect` sin parámetros para que veamos cómo y cuándo funciona.
-```
-const Nombre = (props) => {
-   // componentDidMount() {
-   //    alert('Te damos la bienvenida ' + this.props.nombre);
-   // }
-
-   React.useEffect(() => {
-      console.log('Dentro de useEffect');
-   });
-
-   // componentWillUnmount() {
-   //    alert('Adiós');
-   // }
-
-   return (
-      <div>
-         {props.nombre}
-         <button onClick={props.borrarNombreDeLista}>
-            X
-         </button>
-      </div>
-   );
-};
-```
-
-9. Ahora abre la consola del navegador y juega con la app; escribe, agrega, elimina, hazla tuya.
-
-10. Cada vez que cualquier estado es modificado (en este caso en `App.js`), el `useEffect` se ejecuta.
-
-11. No es lo que necesitamos, porque queremos hacer un `componentDidMount`. Para poder lograr esto es muy sencillo.
-
-12. Al `useEffect` le vamos a agregar `[]`.
-```
-React.useEffect(() => {
-   console.log('Dentro de useEffect');
-}, []);
-```
-
-13. Ahora funciona igualito al `componentDidMount`. Esto esta pasando porque le dijimos al `useEffect` que reaccione solamente cuando los parámetros que le mandamos cambien; y como le mandamos un arreglo vacio `[]` (sin parámetros), el `useEffect` solo se ejecutará una sola vez cuando el componente sea montado (`componentDidMount`).
-
-14. Con el texto anterior también se puede deducir que el `useEffect` siempre va a correr como `componentDidMount`. Y es correcto, cada `useEffect` que tengamos, va a correr mínimo una vez como `componentDidMount`.
-
-15. Hasta ahorita ya vimos como podemos hacer que reaccione a cada cambio de cualquier estado o solo cuando se monta el componente; ahora vamos a replicar el `componentWillUnmount`.
-
-16. Dentro del `useEffect` que ya tenemos, vamos a agregarle una función de retorno.
-```
-React.useEffect(() => {
-   console.log('Dentro de useEffect');
-   return () => {
-      console.log('Replicando willUnmount');
-   }
-}, []);
-```
-
-17. ¡Ahora ya tenemos listo nuestro `componentDidMount` y `componentWillUnmount` hechos con hooks!
-
-18. Vamos a pasar el código que comentamos a los hooks, pero en lugar de `alert` lo dejamos como `console.log`.
-```
-import React from 'react';
-import PropTypes from 'prop-types';
-
-const Nombre = (props) => {
-   React.useEffect(() => {
-      console.log('Te damos la bienvenida ' + props.nombre);
-      return () => {
-         console.log('Adiós');
-      }
-   }, []);
-
-   return (
-      <div>
-         {props.nombre}
-         <button onClick={props.borrarNombreDeLista}>
-            X
-         </button>
-      </div>
-   );
-};
-
-Nombre.propTypes = {
-   nombre: PropTypes.string.isRequired,
-   borrarNombreDeLista: PropTypes.func.isRequired
-}
-
-export default Nombre;
-```
-
-19. Ahora si te fijas en la consola del navegador, vas a ver una alerta parecida a `React Hook React.useEffect has a missing dependency: 'props.nombre'`. Esto pasa porque dentro del `useEffect` estamos usando `props.nombre` y quiere que se lo pasemos como parámetro dentro del arreglo `[]`. Para este punto ya debes de saber que pasa si lo agregamos ahí adentro. Sí, ese `useEffect` ahora reaccionaría cuando `props.nombre` cambie, que en este caso nunca va a pasar. PEEEERO, para evitarnos futuros errores a nosotros mismos o a otros desarrolladores, vamos a dejar las cosas bien hechas. Por que así somos nosotros, a toda mdr (madera).
-
-20. Por la misma razón de la madera, también debemos evitar tener alertas en la consola del navegador. Aquí es cuando te recomiendo seguir las [buenas prácticas para `useEffect`](../../BuenasPracticas/useEffect/Readme.md). Esto es opcional pero recomendado.
-
-21. Para este caso se siguió la recomendación de hacerlo por ciclo de vida solamente para mostrarte que podemos tener varios `useEffect`. Si lo hiciste de otra manera esta bien.
-```
-const Nombre = (props) => {
-   const didMount = () => {
-      console.log('Te damos la bienvenida ' + props.nombre);
-   };
-   React.useEffect(didMount, []);
-
-   const willUnmount = () => {
-      return () => {
-         console.log('Adiós');
-      }
-   };
-   React.useEffect(willUnmount, []);
-
-   return (
-      <div>
-         {props.nombre}
-         <button onClick={props.borrarNombreDeLista}>
-            X
-         </button>
-      </div>
-   );
-};
-```
-
-22. Hasta ahorita ya sabemos que podemos:
-   - Pasar de stateful (clase) a stateless (función).
-   - Usar `useState` para los estados ([Sesion-04](../../Sesion-04)).
-   - Recrear los ciclos de vida con hooks.
-   - Tener los `useEffect` que quieras.
-
-23. Ahora vamos a hacer lo mismo con un componente mas extenso, `App.js`.
-
-24. Comenta el `componentDidUpdate`, convierte de stateful a stateless, usa `useState`, y arregla todo lo necesario para que funcione la app.
-
-25. Ya deberías poder hacer todo esto solo; si aún no lo logras, ponte a repasar o toma medidas para que no te quedes atras.
-```
-import React from 'react';
-import Nombre from './Nombre';
-
-const App = () => {
-   const [state, setState] = React.useState({
-      nombre: '',
-      mensaje: '',
-      listaNombres: ['Bedu']
-   })
-
-   // componentDidUpdate(prevProps, prevState) {
-   //    if (state.listaNombres !== prevState.listaNombres) {
-   //       setState({
-   //          mensaje: `Longitud de la lista es: ${state.listaNombres.length}`
-   //       })
-   //    }
-   // };
-
-   const handleInputChange = (event) => {
-      setState({
-         ...state,
-         nombre: event.target.value
-      });
-   };
-
-   const handleClick = () => {
-      const nombreEnEstado = state.nombre;
-      if (!nombreEnEstado) return;
-
-      const listaActualizada = [
-         ...state.listaNombres,
-         nombreEnEstado
-      ];
-
-      setState({
-         ...state,
-         nombre: '',
-         listaNombres: listaActualizada,
-      });
-   };
-
-   const borrarNombreDeLista = (key) => {
-      const copiaDeLista = [...state.listaNombres];
-      copiaDeLista.splice(key, 1);
-
-      setState({
-         ...state,
-         listaNombres: copiaDeLista
-      });
-   };
-
-   return (
-      <div className="margen">
-         {state.mensaje}
-         <br />
-         <input
-            value={state.nombre}
-            onChange={handleInputChange}
-         />
-         <button onClick={handleClick}>
-            Agregar
-         </button>
-
-         <ul>
-            {state.listaNombres.map((nmbr, key) => (
-               <li key={key}>
-                  <Nombre
-                     nombre={nmbr}
-                     borrarNombreDeLista={() => borrarNombreDeLista(key)}
-                  />
-               </li>
-            ))}
-         </ul>
-      </div>
-   );
+    </div>
+  )
 }
 
 export default App;
+``` 
+
+3. Notemos como el método `componentDidMount` con dentro un `this.setState` es sobrepasado por `useEffect` y por `useState`.
+```
+  // ... código omitido ...
+  // state = { todos: [] }
+  const [todos, setTodos] = React.useState([]);
+  // ... código omitido ...
+  // componentDidMount() {
+    // this.setState({
+      // todos: [
+        // { title: "Sesión 1 (JSX)", done: true},
+        // { title: "Sesión 2 (Estado y propiedades)", done: true },
+        // { title: "Sesión 3 (Ciclo de vida)", done: true },
+        // { title: "Sesión 4 (Hooks)", done: false },
+        // { title: "Sesión 5 (Hooks)", done: false },
+        // { title: "Sesión 6 (Rutas)", done: false },
+        // { title: "Sesión 7 (PWA)", done: false },
+        // { title: "Sesión 8 (Material UI)", done: false },
+      // ],
+    // })
+  // }
+  React.useEffect(() => {
+    setTodos([
+      { title: "Sesión 1 (JSX)", done: true},
+      { title: "Sesión 2 (Estado y propiedades)", done: true },
+      { title: "Sesión 3 (Ciclo de vida)", done: true },
+      { title: "Sesión 4 (Hooks)", done: false },
+      { title: "Sesión 5 (Hooks)", done: false },
+      { title: "Sesión 6 (Rutas)", done: false },
+      { title: "Sesión 7 (PWA)", done: false },
+      { title: "Sesión 8 (Material UI)", done: false },
+    ]);
+  }, []);
+  // ... código omitido ...
 ```
 
-26. Ahora vamos a aprender un `useEffect` nuevo, para el `componentDidUpdate`. Probablemente ya tengas una idea de como es o ya hasta lo hiciste.
-
-27. Sí, solo añadimos la dependencia en el arreglo `[]`.
+4. Un ejemplo más real sería traer dicha información de internet, y por ello añadimos un proyecto de backend que nos permite consumir informración. En la carpeta `fake-backend` se encuentra dicho proyecto. Veamos qué tiene el archivo `data.json`
 ```
+{
+  "todos": [
+    { "id": 1, "title": "Sesión 1 (JSX)", "done": true},
+    { "id": 2, "title": "Sesión 2 (Estado y propiedades)", "done": true },
+    { "id": 3, "title": "Sesión 3 (Ciclo de vida)", "done": true },
+    { "id": 4, "title": "Sesión 4 (Hooks)", "done": false },
+    { "id": 5, "title": "Sesión 5 (Hooks)", "done": false },
+    { "id": 6, "title": "Sesión 6 (Rutas)", "done": false },
+    { "id": 7, "title": "Sesión 7 (PWA)", "done": false },
+    { "id": 8, "title": "Sesión 8 (Material UI)", "done": false }
+  ]
+}
+
+```
+
+5. Ahora solo es cuestión de levantar el servidor con `npm start` en la carpeta `fake-backend`
+
+6. Si entramos a `http://localhost:4000` y en particular a `http://localhost:4000/todos` veremos esa misma información pero ya consumida desde un servidor (`localhost:4000`). Así solo hay que consumirla en nuestro `App.js`
+
+7. El componente `App.js` debe de quedar de la siguiente manera
+```
+// ... código omitido ...
+
+const URL = "http://localhost:4000/todos";
+
+// ... código omitido ...
+
 React.useEffect(() => {
-   setState({
-      ...state,
-      mensaje: `Longitud de la lista es: ${state.listaNombres.length}`
-   });
-}, [state.listaNombres]);
-```
+  const getData = async () => {
+    const response = await fetch(URL);
+    const data = await response.json();
+    setTodos(data);
+  };
 
-28. Recuerda seguir las [buenas prácticas para `useEffect`](../../BuenasPracticas/useEffect/Readme.md) para eliminar la alerta de la consola.
-```
-const didUpdate = () => {
-   setState({
-      ...state,
-      mensaje: `Longitud de la lista es: ${state.listaNombres.length}`
-   });
-};
-React.useEffect(didUpdate, [state.listaNombres]);
-```
+  getData();
+}, []);
 
-29. Ahora este nuevo `useEffect` se ejecutará cada vez que el componente se monte y cada que `state.listaNombres` cambie.
-
-30. Resultado
-<img src="./public/resultado.png" width="400">
+// ... código omitido ...
+```
 
 -------
 

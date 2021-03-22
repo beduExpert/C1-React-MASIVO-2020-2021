@@ -1,21 +1,20 @@
 [`React Fundamentals`](../../README.md) > [`Sesión 02: Sesión 04: Hooks y useState`](../Readme.md) >[`Ejemplo-02`](../Ejemplo-02) > `Reto 2`
 
-## ¡Pero quiere otro!
+## Resolviendo bugs
 
 ### OBJETIVO
-- De componente stateful (clase) a hook.
+- Todo refactor y nuevas funcionalidades require atención al detalle.
 
 #### REQUISITOS
-- Haber completado el [Reto-01](../../Sesion-02/Reto-01) de la Sesion-02.
+- Haber completado el [Reto-01](../../Sesion-04/Reto-01) de la Sesion-04.
 
 #### DESARROLLO
 
-1. Abrir nuestro proyecto "Tía Socorro ganó" del [Reto-01](../../Sesion-02/Reto-01) de la Sesion-02.
+1. Abrir nuestro proyecto en el [Reto-01](../../Sesion-04/Reto-01) de la Sesion-04.
 
-2. Vamos a convertir nuestro componente `Mantel.js` de stateful (clase) a hooks.
+2. La implementación que tiene el Reto-01 tiene un bug, cuando se ocultan las tareas realizadas, y se borra/marca como realizada una tarea, no ocurre lo esperado.
 
-3. Resultado:
-<img src="./public/resultado.png" width="400">
+3. Arreglar el bug
 
 ## ❗Importante
 

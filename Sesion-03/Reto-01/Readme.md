@@ -14,10 +14,9 @@
 
 1. Abrir nuestro proyecto "Incremento" del [Ejemplo-01](../Ejemplo-01).
 
-2. Debemos de tener 2 botones, uno para sumar y otro para restar.
+2. Debemos interactuar con el estado en `App` a través de los botones que despliega `Todo`
 
-3. Resultado:
-<img src="./public/resultado.png" width="400">
+3. ¿Por qué algunos componentes tienen `defaultProps` y para qué funciona?
 
 ## ❗Importante
 

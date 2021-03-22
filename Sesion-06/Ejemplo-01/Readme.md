@@ -4,216 +4,264 @@
 
 ### OBJETIVO
 - react router dom.
-- Componente anchor (a).
-- Componente Link.
-- Exact path.
+- route
+- route params
 
 #### REQUISITOS 
 - Tener Node instalado.
 
 #### DESARROLLO
 
-1. Comenzar nuevo proyecto de React con el comando `npx create-react-app ejemplo1`.
+1. Abrir el proyecto en el último reto.
 
-2. Seguir las [buenas prácticas para empezar un proyecto](../../BuenasPracticas/EmpezandoProyectos/Readme.md).
-
-3. Vamos a darle un margen a la aplicación para que no se vea en la mera esquina, creamos una clase CSS y se la ponemos a nuestro `div`.
+2. Vamos a agregar información a nuestras tareas en el backend.
 ```
-.margen {
-   margin: 100px;
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Sesión 1 (JSX)",
+      "details": ["HTML o JSX", "MVC"],
+      "done": true
+    },
+    {
+      "id": 2,
+      "title": "Sesión 2 (Estado y propiedades)",
+      "details": ["this.setState", "this.props", "componentes statefull vs stateless"],
+      "done": true
+    },
+    {
+      "id": 3,
+      "title": "Sesión 3 (Ciclo de vida)",
+      "details": ["componentDidMount", "this.setState"],
+      "done": true
+    },
+    {
+      "id": 4,
+      "title": "Sesión 4 (Hooks)",
+      "details": ["useState", "componentes stateless"],
+      "done": false
+    },
+    {
+      "id": 5,
+      "title": "Sesión 5 (Hooks)",
+      "details": ["useState", "useEffect"],
+      "done": false
+    },
+    {
+      "id": 6,
+      "title": "Sesión 6 (Rutas)",
+      "details": ["react-router-dom", "useHistory"],
+      "done": false
+    },
+    {
+      "id": 7,
+      "title": "Sesión 7 (PWA)",
+      "details": ["con qué se come eso"],
+      "done": false
+    },
+    {
+      "id": 8,
+      "title": "Sesión 8 (Material UI)",
+      "details": ["así sin codear CSS, qué fácil!"],
+      "done": false
+    }
+  ]
 }
 ``` 
 
-4. Ahora vamos a instalar una librería por primera vez. En la consola la instalamos con el comando `npm install react-router-dom` y cuando termine, la comenzamos con `npm start`.
+3. Iniciamos el servidor (backend `npm start`) y verificamos podemos consumir el API `http://localhost:4000/todos`
 
-5. Importamos los componentes que vamos a necesitar de la librería.
+4. En el proyecto de frontend, instalamos `react-router-dom` con `npm install --save react-router-dom`
+
+5. Agregamos los componentes `BrowserRouter` y `Route` al componente `App` para poderlos usar.
 ```
 import { BrowserRouter, Route } from 'react-router-dom';
-``` 
-
-6. Como queremos que nuestra applicación completa tenga rutas, vamos a hacer que el enrutador `BrowserRouter` sea el padre de TODO.
 ```
-import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 
-const App = () => {
-   return (
+6. Envolvemos con `BrowserRouter` a partir del nodo que queremos tenga rutas.
+```
+// ... código omitido ...
+import { BrowserRouter, Route } from 'react-router-dom';
+// ... código omitido ...
+
+function App() {
+  // ... código omitido ...
+
+  return (
+    <div className="wrapper">
       <BrowserRouter>
-         <div className="margen">
-            Hola Mundo!
-         </div>
+        <div className="card frame">
+          <Route path="/" exact render={() => <div>Raíz</div>} />
+          <Route path="/test" render={() => <div>Test</div>} />
+        </div>
       </BrowserRouter>
-   );
-};
+    </div>
+  )
 
-export default App;
+  // ... código omitido ...
 ```
 
-7. Listo, ya hicimos que nuestra aplicación acepte rutas dinámicas. Ahora vamos a probarlas.
-
-8. Como el enrutador despliega componentes, vamos a crear 2 nuevos componentes  `Cabeza.js` y `Cuerpo.js`.
+7. Refactorizamos toda la vista que ahora será `Home`
 ```
 import React from 'react';
-
-const Cabeza = () => {
-   return (
-      <div>
-         Cabeza
-      </div>
-   );
-};
-
-export default Cabeza;
-```
-```
-import React from 'react';
-
-const Cuerpo = () => {
-   return (
-      <div>
-         Cuerpo
-      </div>
-   );
-};
-
-export default Cuerpo;
-```
-
-9. Ahora le vamos a decir al enrutador que cada que nuestra aplicación este en el url `/` que despliegue el componente `Cabeza.js` y cuando este en `/cuerpo` que despliegue el `Cuerpo.js`.
-```
-import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import Cabeza from './Cabeza';
-import Cuerpo from './Cuerpo';
-
-const App = () => {
-   return (
-      <BrowserRouter>
-         <div className="margen">
-            Hola Mundo!
-         </div>
-
-         <Route path="/" component={Cabeza} />
-         <Route path="/cuerpo" component={Cuerpo} />
-      </BrowserRouter>
-   );
-};
-
-export default App;
-```
-
-10. En este momento las rutas se estan haciendo de manera manual. Para poder ver el resultado hay que jugar con las rutas.
-   - Cabeza: [http://localhost:3000/](http://localhost:3000/)
-   - Cuerpo: [http://localhost:3000/cuerpo](http://localhost:3000/cuerpo)
-
-11. Ahora vamos a agregar un menú o header en donde manejemos nuestras rutas con enlaces. Creamos el componente `Header.js` y agregamos enlaces a las 2 rutas que manejamos en este momento.
-```
-import React from 'react';
-
-const Header = () => {
-   return (
-      <div>
-         <a href="/">
-            Cabeza
-         </a>
-         -
-         <a href="/cuerpo">
-            Cuerpo
-         </a>
-      </div>
-   );
-};
-
-export default Header;
-```
-
-12. Importamos en `App.js`, metemos todo dentro del margen y probamos.
-```
-import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Header from './Header';
-import Cabeza from './Cabeza';
-import Cuerpo from './Cuerpo';
+import Form from './Form';
+import TodoList from './TodoList';
 
-const App = () => {
-   return (
-      <BrowserRouter>
-         <div className="margen">
-            <Header />
-
-            <Route path="/" component={Cabeza} />
-            <Route path="/cuerpo" component={Cuerpo} />
-         </div>
-      </BrowserRouter>
-   );
+function Home(props) {
+  return (
+    <>
+      <Header
+        counter={props.filtered.length}
+        show={props.show}
+        toggleDone={props.setShow}
+      />
+      <TodoList 
+        tasks={props.filtered}
+        toggleFn={props.handleClickToggleDone}
+        deleteFn={props.handleClickDelete}
+      />
+      <Form addTaskFn={props.addTask} />
+    </>
+  )
 };
 
-export default App;
+Home.propTypes = {
+  filtered: PropTypes.array.isRequired,
+  show: PropTypes.bool.isRequired,
+  setShow: PropTypes.func.isRequired,
+  handleClickToggleDone: PropTypes.func.isRequired,
+  handleClickDelete: PropTypes.func.isRequired,
+  addTask: PropTypes.func.isRequired,
+}
+
+export default Home;
 ```
 
-13. Ahora nuestro `Header.js` es el encargado de llevarnos de una ruta a otra; PEEEERO, si te fijas bien, cada vez que estamos viajando de una ruta a otra, la página se recarga. Y esto esta extremadamente mal. Cuando lleguemos al modulo de `redux` te vas a dar cuenta del porqué.
+8. Notemos que ahora recibiremos en `Home` un montón de props de `App`. También veamos `<> y </>` que es la forma abreviada en que React pone un `Fragment`.
 
-14. Esto esta pasando porque usamos el componente anchor `<a />`; pero como nuestro enrutador viene de `react-router-dom`, vamos a usar su componente de ruteo `Link`.
 
-15. Para pasar de `a` a `Link` seguimos 3 pasos:
-   - Importar de librería
-   - Cambiar todos los `<a />` por `<Link />`
-   - Cambiar `href` por `to`
+9. Refactorizamos `App` para pasar los props a `Home`.
+```
+// ... código omitido ...
+import { BrowserRouter, Route } from 'react-router-dom';
+// ... código omitido ...
+
+function App() {
+  // ... código omitido ...
+
+  return (
+    <div className="wrapper">
+      <BrowserRouter>
+        <div className="card frame">
+          <Route path="/" exact render={props =>
+            <Home
+              {...props}
+              filtered={filtered}
+              show={show}
+              setShow={setShow}
+              handleClickToggleDone={handleClickToggleDone}
+              handleClickDelete={handleClickDelete}
+              addTask={addTask}
+            />
+          } />
+        </div>
+      </BrowserRouter>
+    </div>
+  )
+
+  // ... código omitido ...
+```
+
+10. Nuestra aplicación ya tiene un ruteador pero visualmente no notamos cambio. Eso viene haciendo uso de más rutas y funcionalidad alrededor de ellas.
+
+11. Agregamos un componente `TodoDetails` dónde pintaremos los detalles que al principio agregamos al backend.
 ```
 import React from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const Header = () => {
-   return (
-      <div>
-         <Link to="/">
-            Cabeza
-         </Link>
-         -
-         <Link to="/cuerpo">
-            Cuerpo
-         </Link>
-      </div>
-   );
+function TodoDetails(props) {
+  const [todo, setTodo] = React.useState({ title: "", details: [] });
+  const id = props.match.params.id;
+
+  React.useEffect(function() {
+    const getData = async () => {
+      try {
+        const response = await fetch(`${props.url}/${id}`);
+        const t = await response.json();
+
+        setTodo(t);
+      } catch(e) {
+        console.error(e);
+      }
+    };
+
+    getData();
+  }, [id, props.url]);
+
+  return (
+    <>
+    <div className="card-header">
+      <h1 className="card-header-title header">
+        {todo.title}
+      </h1 >
+    </div>
+    <div className="list-wrapper">
+      {
+        todo.details.map((detail, i) => 
+          <div key={i} className="list-item">
+            { detail }
+          </div>
+        )
+      }
+    </div>
+    </>
+  )
+}
+
+TodoDetails.propTypes = {
+  url: PropTypes.string.isRequired
 };
 
-export default Header;
+export default TodoDetails;
+
 ```
 
-16. Vuelve a probar la app; mira, siente y disfruta la fluidez y dinamismo de viajar entre rutas.
+12. Toda componente que es hijo directo de una ruta tiene props propias del ruteador. A saber `match` tiene una propiedad que es `params` y ahí vienen los parámetros de la URL que le pasaremos. Con ese parametro `id` iremos al backend a descargar la información propia de la tarea con dicho id.
 
-17. Pero ahora tenemos otro problema, el `Cuerpo.js` se enojó porque la `Cabeza.js` tiene su propia ruta y él no; y tiene razón.
-
-18. Vamos a hacer que las rutas sean específicas agregando el atributo de `exact`.
+13. Ahora modificamos `App` para usar `TodoDetails`.
 ```
-<Route exact path="/" component={Cabeza} />
-<Route exact path="/cuerpo" component={Cuerpo} />
+  // ... código omitido ...
+  return (
+    <div className="wrapper">
+      <BrowserRouter>
+        <div className="card frame">
+          <Route path="/" exact render={props =>
+            <Home
+              {...props}
+              filtered={filtered}
+              show={show}
+              setShow={setShow}
+              handleClickToggleDone={handleClickToggleDone}
+              handleClickDelete={handleClickDelete}
+              addTask={addTask}
+            />
+          } />
+          <Route path="/details/:id" render={props =>
+            <TodoDetails
+              {...props}
+              url={URL}
+            />
+          } />
+        </div>
+      </BrowserRouter>
+    </div>
+  )
+  // ... código omitido ...
 ```
 
-19. Como lo dice el atributo, ahora el componente solo se desplegará cuando la ruta sea exactamente igual.
-
-20. Pero resulta que `Cuerpo.js` ahora extraña a `Cabeza.js`, pero también quiere conservar su espacio personal. Y como somos seres perfectos y piadosos, les vamos a dar su ruta compartida.
-
-21. Creamos un nuevo enlace en `Header.js`.
-```
-<Link to="/juntos">
-   Juntos
-</Link>
-```
-
-22. Y en `App.js` ahora vamos a desplegar 2 componentes en una misma ruta de una nueva manera.
-```
-<Route exact path="/" component={Cabeza} />
-<Route exact path="/cuerpo" component={Cuerpo} />
-<Route exact path="/juntos">
-   <Cabeza />
-   <Cuerpo />
-</Route>
-```
-
-23. Ya cada uno tiene su lugar y también aprendieron a compartir.
-
-24. Resultado:
-<img src="./public/resultado.gif">
+14. En la propiedad `render` estamos creando un componente funcional, que solo sirve para poder usar `TodoDetails` con las props que queremos computadas en el componente `App`
 
 [`Siguiente: Reto-01`](../Reto-01)

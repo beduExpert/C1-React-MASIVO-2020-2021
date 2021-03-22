@@ -2,10 +2,9 @@
 
 🎯 **Objetivos:**
 
-- Introducción de los **ciclos de vida:** **DidMount**, **WillUnmount**, **DidUpdate**.
+- Introducción de los **ciclos de vida.
 - Entender en que momento se ejecuta cada uno.
 - Como **modificar** el **estado**.
-- Ver todos los eventos disponibles: **change**, **click**, **hover**, etc.
 - Aprender a usar los eventos **onClick** y **onChange**.
 - Mandar funciones como **props**.
 
@@ -23,22 +22,17 @@ Se llama ciclo de vida al tiempo que pasa desde que un objeto se crea desde el c
 
 ## 🕵 Ejemplos:
 
-+ [`Ejemplo 01: Incremento`](Ejemplo-01)
-+ [`Ejemplo 02: bienvenida`](Ejemplo-02)
++ [`Ejemplo 01: Modificar estado`](Ejemplo-01)
++ [`Ejemplo 02: Ciclo de vida`](Ejemplo-02)
 
 ## 💻 Retos:
 
-+ [`Reto 01: Incremento y decremento`](Reto-01)
-+ [`Reto 02: Ciclos de vida viejos`](Reto-02)
++ [`Reto 01: Pasar props`](Reto-01)
++ [`Reto 02: Avisar si una tarea existe`](Reto-02)
 
 ## 🛡 Postwork
 Completar el Reto-01 y Reto-02...[`leer más`](Postwork/)
 
 ## ⚛ ORGANIZACION DE LA CLASE 
-- DidMount, WillUnmount, DidUpdate.
-- Eventos del navegador.
-- onClick y onChange.
-- Modificando el estado con this.setState.
-- utilizar un arreglo como estado.
-- Desplegando arreglos con componentes.
-- Mandar funciones como props.
+- Estado y ciclo de vida.
+- Eventos.

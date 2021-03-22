@@ -1,199 +1,282 @@
 [`React Fundamentals`](../../README.md) > [`Sesión 03: Estado (state) y Propiedades (props)`](../Readme.md) > `Ejemplo 1`
 
-## Incremento
+## Estado general de la aplicación
 
 ### OBJETIVO
 - Modificar el estado.
-- Modificar estado del padre por medio de funciones mandadas como props.
+- Tener un estado general de la aplicación y como opera en distintos componentes.
 
 #### REQUISITOS 
 - Tener Node instalado.
 
 #### DESARROLLO
 
-1. Comenzar nuevo proyecto de React con el comando `npx create-react-app ejemplo1`.
-
-2. Seguir las [buenas prácticas para empezar un proyecto](../../BuenasPracticas/EmpezandoProyectos/Readme.md).
-
-3. Convertimos nuestra `App.js` en un componente stateful (clase) para usar el estado.
+1. Convertimos nuestra `App.js` en un componente stateful (clase) para usar el estado.
 ```
 import React from 'react';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
 
 class App extends React.Component {
-   render() {
-      return (
-         <div>
-            Hola Mundo!
-         </div>
-      );
-   }
+
+  render() {
+    return (
+      <div className="wrapper">
+        <div className="card frame">
+          <Header />
+          <TodoList />
+          <Form />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
 ```
 
-4. Vamos a darle un margen a la aplicación para que no se vea en la mera esquina, creamos una clase CSS y se la ponemos a nuestro `div`.
+2. Agregamos un estado inicial que contendrá todas las tareas de la aplicación
 ```
-.margen {
-   margin: 100px;
+import React from 'react';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+
+class App extends React.Component {
+  state = { todos: [] }
+
+  render() {
+    return (
+      <div className="wrapper">
+        <div className="card frame">
+          <Header />
+          <TodoList />
+          <Form />
+        </div>
+      </div>
+    );
+  }
 }
+
+export default App;
 ``` 
 
-5. Creamos un estado y lo imprimimos para ver que funcione bien.
+3. Usamos el estado en dónde esperamos recibirlo
 ```
 import React from 'react';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
 
 class App extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         contador: 0
-      };
-   }
+  state = { todos: [] }
 
-   render() {
-      return (
-         <div className="margen">
-            {this.state.contador}
-         </div>
-      );
-   }
+  render() {
+    return (
+      <div className="wrapper">
+        <div className="card frame">
+          <Header />
+          <TodoList tasks={this.state.todos} />
+          <Form />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
 ``` 
 
-6. Creamos un botón y aseguramos que funcione bien.
-```
-import React from 'react';
-
-class App extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         contador: 0
-      };
-   }
-
-   handleClick = () => alert('pero despacito');
-
-   render() {
-      return (
-         <div className="margen">
-            {this.state.contador}
-
-            <button onClick={this.handleClick}>
-               Picame
-            </button>
-         </div>
-      );
-   }
-}
-
-export default App;
-```
-
-7. Si te fijas, estamos usando el evento `click` del navegador. Cuando queramos usar algún evento, tenemos que hacerlo agregando el sufijo `on` seguido del evento y escribirlo en [camel case](https://techterms.com/definition/camelcase).
-
-8. En nuestro caso estamos usando `click` y este se traduce a `onClick`. Si usáramos el `change`, sería `onChange`. Estos son todos los [eventos del navegador](https://www.w3schools.com/jsref/dom_obj_event.asp).
-
-9. Ahora vamos a cambiar el estado del contador cada vez que le demos click en el botón.
-```
-import React from 'react';
-
-class App extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         contador: 0
-      };
-   }
-
-   handleClick = () => {
-      this.setState({
-         contador: this.state.contador + 1
-      })
-   }
-
-   render() {
-      return (
-         <div className="margen">
-            {this.state.contador}
-
-            <button onClick={this.handleClick}>
-               Picame
-            </button>
-         </div>
-      );
-   }
-}
-
-export default App;
-```
-
-10. Ya logramos cambiar el estado. Si te fijas, `this.setState({})` recibe el nombre del atributo que queramos cambiar con el nuevo valor, que en nuestro caso es `contador: this.state.contador + 1` (lo que valga en ese momento + 1).
-
-11. Ahora vamos a hacer un nuevo componente `Boton.js` el cual va a recibir 2 propiedades (props), recuerda seguir las [buenas prácticas para propiedades](../../BuenasPracticas/PropTypes/Readme.md).
+4. Modificamos el componente que recibe este estado `TodoList`, iterando sobre las tareas recibidas.
 ```
 import React from 'react';
 import PropTypes from 'prop-types';
+import Todo from './Todo';
+import '../css/TodoList.css';
 
-const Boton = (props) => {
-   return (
-      <button onClick={props.handleClick}>
-         {props.texto}
-      </button>
-   );
+function TodoList(props) {
+  return (
+    <div className="list-wrapper">
+      {
+        props.tasks.map((e, i) => 
+          <Todo
+            key={i}
+            done={e.done}
+            title={e.title} 
+          />
+        )
+      }
+    </div>
+  )
 };
 
-Boton.propTypes = {
-   texto: PropTypes.string.isRequired,
-   handleClick: PropTypes.func.isRequired
+TodoList.propTypes = {
+  tasks: PropTypes.array
 }
 
-export default Boton;
+TodoList.defaultProps = {
+  tasks: []
+}
+
+export default TodoList;
 ```
 
-12. Importamos y vamos a pasarle al `Boton.js` lo que necesite.
+5. Modificamos consecuentemente todos los componentes hijos en dicha rama del árbol.
 ```
 import React from 'react';
-import Boton from './Boton';
+import PropTypes from 'prop-types';
+import '../css/Todo.css';
+import Checkmark from './Checkmark';
+
+class Todo extends React.Component {
+  render () {
+    return (
+      <div className={`list-item ${this.props.done ? 'done' : ''}`}>
+        {this.props.title}
+        <div className="is-pulled-right">
+          <Checkmark done={this.props.done} />
+          <button className="delete is-pulled-right" />
+        </div>
+      </div>
+    )
+  }
+}
+
+Todo.propTypes = {
+  done: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired
+}
+
+export default Todo;
+
+```
+
+6. Realizamos los últimos 3 pasos respectivamente con los siguientes componentes a modificiar (`Header`).
+```
+import React from 'react';
+import PropTypes from 'prop-types';
+import '../css/header.css';
+
+function Header(props) {
+  return (
+    <div className="card-header">
+      <h1 className="card-header-title header">
+        Hay {props.counter} tareas
+      </h1>
+    </div>
+  )
+};
+
+Header.propTypes = {
+  counter: PropTypes.number
+}
+
+Header.defaultProps = {
+  counter: 0
+}
+
+export default Header;
+```
+
+7. Cambiamos el estado original con una función que se ejecutará dándole click a un botón
+```
+import React from 'react';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+import '../css/App.css';
 
 class App extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         contador: 0
-      };
-   }
+  state = { todos: [] }
 
-   handleClick = () => {
-      this.setState({
-         contador: this.state.contador + 1
-      })
-   }
+  handleClick = (e) => {
+    this.setState({
+      todos: [
+        { title: "Tarea 1", done: true },
+        { title: "Tarea 2", done: false },
+        { title: "Tarea 3", done: true },
+        { title: "Tarea 4", done: false },
+        { title: "Tarea 5", done: true },
+        { title: "Tarea 6", done: false },
+        { title: "Tarea 7", done: true },
+        { title: "Tarea 8", done: false },
+        { title: "Tarea 9", done: true },
+        { title: "Tarea 10", done: false },
+      ],
+    })
+  }
 
-   render() {
-      return (
-         <div className="margen">
-            <Boton
-               texto={this.state.contador}
-               handleClick={this.handleClick}
-            />
-         </div>
-      );
-   }
+  render() {
+    return (
+      <div className="wrapper">
+        <div className="card frame">
+          <Header counter={this.state.todos.length} />
+          <TodoList tasks={this.state.todos} />
+          <Form />
+          <button onClick={this.handleClick} className="button init">
+            Inicializar
+          </button>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
 ```
 
-13. Fíjate como estamos mandando el estado de `App.js` y una función como propiedades. El `<Boton  />` lo único que hace es usar esas propiedades y ya.
+8. Pintamos el botón que inicializa el estado solo cuándo el estado está vacío
+```
+import React from 'react';
+import Header from './Header';
+import Form from './Form';
+import TodoList from './TodoList';
+import '../css/App.css';
 
-14. Cada que le demos click al `<Boton />`, el contador sumará 1.
+class App extends React.Component {
+  state = { todos: [], showButton: true }
 
-15. Resultado:
-<img src="./public/resultado.png" width="400">
+  handleClick = (e) => {
+    this.setState({
+      todos: [
+        { title: "Tarea 1", done: true },
+        { title: "Tarea 2", done: false },
+        { title: "Tarea 3", done: true },
+        { title: "Tarea 4", done: false },
+        { title: "Tarea 5", done: true },
+        { title: "Tarea 6", done: false },
+        { title: "Tarea 7", done: true },
+        { title: "Tarea 8", done: false },
+        { title: "Tarea 9", done: true },
+        { title: "Tarea 10", done: false },
+      ],
+      showButton: false,
+    })
+  }
+
+  render() {
+    return (
+      <div className="wrapper">
+        <div className="card frame">
+          <Header counter={this.state.todos.length} />
+          <TodoList tasks={this.state.todos} />
+          <Form />
+          {
+            this.state.showButton &&
+              <button onClick={this.handleClick} className="button init">
+                Inicializar
+              </button>
+          }
+        </div>
+      </div>
+    );
+  }
+}
+
+export default App;
+
+```
 
 -------
 

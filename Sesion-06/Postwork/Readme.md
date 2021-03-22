@@ -2,7 +2,6 @@
 
 #### REQUISITOS
 - Haber completado el [Ejemplo-01](../Ejemplo-01).
-- Haber completado el [Ejemplo-02](../Ejemplo-02).
 
 #### DESARROLLO
 
