@@ -1,0 +1,7 @@
+.done {
+  text-decoration: line-through;
+}
+
+.list-item > span {
+  cursor: pointer;
+}

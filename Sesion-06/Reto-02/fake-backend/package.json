@@ -1,0 +1,14 @@
+{
+  "name": "fake-backend",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "json-server --no-cors -p 4000 data.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "json-server": "^0.16.3"
+  }
+}
