@@ -1,73 +1,101 @@
 [`React Fundamentals`](../../README.md) > [`Sesión 07: Progressive web apps (PWA)`](../Readme.md) > `Ejemplo 1`
 
-## ¡Wooow!
+## Push notifications
 
 ### OBJETIVO
 - Configurar la aplicación react para hacerla progressive web app.
 - Configurar un service worker.
+- Recibir push notifications
 
 #### REQUISITOS 
 - Tener Node instalado.
+- Tener un servidor que mande la push notifications (carpeta `push-notification`)
 
 #### DESARROLLO
 
-1. Comenzar nuevo proyecto de React con el comando `npx create-react-app todo-pwa`.
+1. Agregar el archivo `serviceWorker.js` a la carpeta `src` con el siguiente script.
+```
+export function register() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+    navigator.serviceWorker.ready
+      .then(function(registration) {
+        return registration.pushManager.getSubscription();
+      })
+      .then(function(subscription) {
+        if (!subscription) {
+          subscribe();
+        } else {
+          console.log(
+            JSON.stringify({
+              subscription: subscription,
+            })
+          );
+        }
+      });
+  }
+}
 
-2. Seguir las instrucciones para [configurar una PWA](../../BuenasPracticas/PWA/Readme.md).
+function subscribe() {
+  navigator.serviceWorker.ready
+    .then(function(registration) {
+      const vapidPublicKey = 'BDThDairU5meugiFMDGdOPkmf3ZJN_5Ajf8KuDPHPYTERDCrQJjBKEdBPKQvKoPv_vZSXN5EflwLaXenajwd1e0';
 
-3. Todas estas configuraciones nunca las vamos a ver en acción mientras estemos trabajando en desarrollo (`npm start` en `localhost:3000`). Solo van a poder ser visibles cuando la app este en producción (tenga su propio url).
+      return registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
+      });
+    })
+    .then(function(subscription) {
+      console.log(
+        JSON.stringify({
+          subscription: subscription,
+        })
+      );
+    })
+    .catch(err => console.error(err));
+}
 
-4. PEEEERO, hay una forma de simular el ambiente de producción en `localhost`.
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+}
 
-5. En la terminal escribimos `npm run build`. Este comando nos va a crear un folder en la carpeta raíz (`todo-pwa/build`) con los archivos preparados para producción.
+```
 
-6. Escribimos `npx serve -s build`. Este comando va a simular ser producción con lo que nuestro folder `build` tenga en ese momento.
+2. La función `register` nos registra el service worker `service-worker.js` y su vez establece la subscripción para poderla usar en el servicio que envía las Push Notifications.
 
-7. Abre [localhost:5000](http://localhost:5000/) y verás la app corriendo como si fuera producción.
+3. La función `subscribe` establece el registro de las llaves públicas que son válidas para enviar Push Notifications al navegador dónde se está corriendo esta aplicación.
 
-8. Para demostrar que el `service worker` esta activo y funcionando, abrimos la consola del navegador y vamos a la pestaña de `Application`. Ahí vamos a ver nuestro `service worker` registrado y corriendo.
-<img src="./img/1.png" width="500">
+4. La función `urlBase64ToUint8Array` es un helper que nos permite escribir un array de enteros sin signo para poder hacer la codificación en base64.
 
-9. Como también configuramos que funcione sin internet, podemos simular esto en la consola de igual forma. Le damos click a `offline` en la consola del navegador y recargamos.
-<img src="./img/2.png" width="500">
+5. Agregamos el service worker `service-worker.js` a la carpeta `public` pues siempre tiene que estar en la raíz de lo desplegado en el servidor web.
+```
+self.addEventListener('push', event => {
+  console.log('[Service Worker] Push Received.');
+  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
 
-10. Si vamos a la consola, podemos ver que esta precargando lo que tiene en `cache` y hasta el último nos esta diciendo que esta en modo `offline`.
-<img src="./img/3.png" width="500">
+  const title = 'Tarea agregada';
+  const options = {
+    body: event.data.text(),
+  };
 
-11. Regresa al paso 9 y quítale el modo `offline`.
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+```
 
-12. Abre `App.js` y escribe tu nombre dentro del `<p />` debajo de la `<img />`. Guardalo y regresa a ver los cambios.
+6. Esete service worker solo está a la escucha de los eventos `push` (las Push Notifications), y cuándo llega alguna, simplemente la despliega.
 
-13. Si te fijas, los cambios no se ven reflejados en el navegador. Esto pasa porque lo que estamos viendo en [localhost:5000](http://localhost:5000/) es lo que la carpeta `build` tiene en ese momento. Entonces tenemos que volver a hacer los pasos 5 y 6 cada vez que queramos ver reflejado los nuevos cambios.
+7. En el frontend es todo lo que se necesita para tener un service worker funcionando (registrarlo) y hacer algo con él.
 
-14. Repite los pasos 5 (`npm run build`) y 6 (`npx serve -s build`).
-
-15. ¿Por qué no se esta actualizando y nos muestra la versión pasada? Porque como el `service worker` esta guardado en cache, esta mostrando la versión pasada. Incluso en la misma consola nos esta diciendo que tiene una nueva versión y que necesitamos recargar la página.
-<img src="./img/4.png" width="500">
-
-16. Para resolver esto, habilitamos la actualización al recargar.
-<img src="./img/5.png" width="500">
-
-17. Y ahora la mejor parte de las PWA, instalación en todos los dispositivos.
-
-18. A simple vista, la manera de identificar si un sitio web es una PWA es ver si se puede instalar o no. Esto podemos verlo hasta el final del url. Si aparece un signo de `+` es porque es una PWA.
-<img src="./img/6.png" width="500">
-
-19. Instala la app y verás que ahora estará en la computadora como si fuera una aplicación de escritorio. Increible.
-
-20. Para desinstalarla sigue los siguientes pasos:
-<img src="./img/7.png" width="500">
-
-21. También se puede instalar en [Android](https://www.youtube.com/watch?v=kUsqZ9NYB2Y) y [IOS](https://www.youtube.com/watch?v=qtrRqzbXFtE).
-
-22. Ahora vamos a publicar nuestra app en internet con un proveedor gratis y de una manera muuuuuuy facil.
-
-23. Vamos a la página [Netlify](https://www.netlify.com/) y creamos una cuenta.
-
-24. Una vez adentro, agarramos y arrastramos nuestra carpeta `build` dentro del recuadro.
-<img src="./img/8.gif">
-
-25. Abre el url de la app y listo, ya tenemos nuestra React PWA en internet.
-<img src="./img/9.png" width="500">
+8. Con nuestro proyecto ayuda, le mandamos Push Notifications a la aplicaicón. (Este proyecto está probado en Mac os X y Linux, probablemente funciona el Windows, pero noe está probado ahí). Además depende de cURL y de Go.
+```
+$ cd push-notification
+$ curl -X POST http://localhost:4000/todos -H 'Content-Type: application/json' -d'{"title": "Agregar push notifications", "details": ["uno", "dos"], "done": false}' && go run main.go -m 'Agregar push notifications'
+```
 
 [`Siguiente: Reto-01`](../Reto-01)

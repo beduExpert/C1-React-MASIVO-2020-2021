@@ -4,6 +4,7 @@
 
 - Configurar la aplicación react para hacerla progressive web app.
 - Configurar un service worker.
+- Recibir push notifications.
 
 ### Secciones:
 
@@ -19,18 +20,18 @@ PWA o Progressive web apps (aplicaciones web progresivas), es un término que se
 
 ## 🕵 Ejemplos:
 
-+ [`Ejemplo 01: ¡Wooow!`](Ejemplo-01)
++ [`Ejemplo 01: Push notifications`](Ejemplo-01)
 
 ## 💻 Retos:
 
-+ [`Reto 01: ¿Hamburguesas o qué?`](Reto-01)
++ [`Reto 01: Entender push notifications`](Reto-01)
 
 ## 🛡 Postwork
 + Completar el Reto-01...[`leer más`](Postwork/)
 
 #### ⚛ ORGANIZACION DE LA CLASE
 - PWA.
-- Como descargarla.
+- Push notifications.
 
 #### EJEMPLOS DE PWS's
 - [Lodash](https://lodash.com/)
