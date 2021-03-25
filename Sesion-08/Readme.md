@@ -2,8 +2,6 @@
 
 🎯 **Objetivos:**
 - Usar los componentes reutilizables de Material UI.
-- Implementar apps responsibles.
-- Crear formas.
 
 ### Secciones:
 
@@ -18,16 +16,14 @@ Material UI es el framework de IU para React más popular del mundo...[`leer mas
 
 ## 🕵 Ejemplos:
 
-+ [`Ejemplo 01: App responsiva`](Ejemplo-01)
-+ [`Ejemplo 02: Forma`](Ejemplo-02)
++ [`Ejemplo 01: Reescribir el grid principal`](Ejemplo-01)
 
 ## 💻 Retos:
-+ [`Reto 01: Periódico`](Reto-01)
-+ [`Reto 02: Una mejor Forma`](Reto-02)
++ [`Reto 01: Reescribir todo la aplicación web con Material UI`](Reto-01)
 
 
 ## 🛡 Postwork
-+ Combina **TODOS** los ejemplos, retos y postworks que hemos hecho en una sola app...[`leer más`](Postwork/)
++ Completar el Reto 01 de la sesión 08
 
 #### ⚛ ORGANIZACION DE LA CLASE
 - Navegar en el sitio de material ui.
