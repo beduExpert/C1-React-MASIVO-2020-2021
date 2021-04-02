@@ -1,5 +1,9 @@
 [`React Fundamentals`](../../README.md) > [`Sesión 02: Estado (state) y Propiedades (props)`](../Readme.md) > `Postwork`
 
+#### OBJETIVO
++ Aplicar el conocimiento de `props` en los componentes.
++ Aplicar el conocimiento de `state` en los componentes.
+
 #### REQUISITOS
 - Tener Node instalado.
 - Completar el [Reto-02](../Reto-02)

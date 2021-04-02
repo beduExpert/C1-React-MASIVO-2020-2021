@@ -1,8 +1,12 @@
 [`Backend Fundamentals`](../../README.md) > [`Sesión 01: Fundamentos de React`](../Readme.md) > `Postwork`
 
+### OBJETIVO
++ Entener la comunicación enter HTML y JSX
++ Pensar a través de reutilización de código con JSX
+
 #### REQUISITOS
 - Tener Node instalado.
-
+- Responder las preguntas en los hilos de Slack (la última quizás con código de ser posible).
 
 #### DESARROLLO
 

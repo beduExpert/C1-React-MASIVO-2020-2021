@@ -2,6 +2,7 @@
 
 🎯 **Objetivos:**
 
++ Instalación de Node.js
 + Entender la diferencia entre HTML y JSX.
 + Ver y aprender cómo react permite la reutilización de componentes.
 + Maneras de insertar CSS a proyectos con react.
@@ -12,6 +13,7 @@
 
 **Objetivos:**
 
++ Entender qué es Node.js
 + Saber como vivíamos antes de React.js
 + Saber que es react
 + Conocer es MVC
@@ -34,6 +36,8 @@ React también llamada ReactJS es una librería de JavaScript creada por Faceboo
 
 
 ## ⚛ ORGANIZACION DE LA CLASE
+
++ Instalar Node.js
 + Qué es React
 + create-react-app
 + Qué es JSX

@@ -20,15 +20,13 @@ La palabra Hook se traduce como Gancho en español, y la razón de que esta nuev
 
 ## 🕵 Ejemplos:
 
-+ [`Ejemplo 01: Incrementando de nuevo`](Ejemplo-01)
-+ [`Ejemplo 02: Patricio evoluciona`](Ejemplo-02)
-+ [`Ejemplo 03: Escuela`](Ejemplo-03)
++ [`Ejemplo 01: Usando hooks`](Ejemplo-01)
++ [`Ejemplo 02: De stateful a stateless`](Ejemplo-02)
 
 ## 💻 Retos:
 
-+ [`Reto 01: 3 botones`](Reto-01)
-+ [`Reto 02: ¡Pero quiere otro!`](Reto-02)
-+ [`Reto 03: ¿Cómo te llamas?`](Reto-03)
++ [`Reto 01`](Reto-01)
++ [`Reto 02`](Reto-02)
 
 ## 🛡 Postwork
 - Completar los ejemplo: 01 y 02. 
