@@ -6,7 +6,7 @@
 - Practicar lo aprendido.
 
 #### REQUISITOS
-- Ejemplo 01 de la sesió'n 07
+- Ejemplo 01 de la sesión 07
 
 #### DESARROLLO
 
