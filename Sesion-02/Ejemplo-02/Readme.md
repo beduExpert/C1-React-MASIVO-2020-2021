@@ -56,9 +56,7 @@ class Todo extends React.Component {
 export default Todo;
 ```
 
-6. Como paso final vamos a seguir las [buenas prácticas para propiedades (props)](../../BuenasPracticas/PropTypes/Readme.md) con los componentes `FocoMercurial.js` y `LuzMercurial.js`.
-
-7. `Todo.js` nos va a quedar así:
+6. `Todo.js` nos va a quedar así:
 ```
 import React from 'react';
 import PropTypes from 'prop-types';
