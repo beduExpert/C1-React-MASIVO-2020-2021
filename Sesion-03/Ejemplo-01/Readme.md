@@ -280,4 +280,4 @@ export default App;
 
 -------
 
-[`Siguiente: Reto-01`](../Reto-01)
+[`Siguiente: Ejemplo-02`](../Ejemplo-02)
