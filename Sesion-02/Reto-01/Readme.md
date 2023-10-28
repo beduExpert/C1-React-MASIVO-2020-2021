@@ -1,6 +1,6 @@
 [`React Fundamentals`](../../README.md) > [`Sesión 02: Estado (state) y Propiedades (props)`](../Readme.md) >[`Ejemplo-01`](../Ejemplo-01) > `Reto 1`
 
-## Tía Socorro ganó
+## Agregando marca de verificación (Checkmark)
 
 ### OBJETIVOS:
 
